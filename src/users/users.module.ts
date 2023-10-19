@@ -12,11 +12,11 @@ import { AuthService } from 'src/auth/auth.service';
       {
         name: 'User',
         schema: UsersSchema,
-      }
+      },
     ]),
     AuthModule,
   ],
   controllers: [UsersController],
-  providers: [UsersService, AuthService]
+  providers: [UsersService, AuthService],
 })
 export class UsersModule {}

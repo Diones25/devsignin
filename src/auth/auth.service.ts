@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { sign } from 'jsonwebtoken';
 import { Model } from 'mongoose';
@@ -12,14 +16,14 @@ export class AuthService {
 
   public async createAccessToken(userId: string): Promise<string> {
     return sign({ userId }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRATION
-    })
+      expiresIn: process.env.JWT_EXPIRATION,
+    });
   }
 
   public async validateUser(jwtPayload: JwtPayload): Promise<User> {
     const user = await this.usersModel.findOne({ _id: jwtPayload.userId });
 
-    if(!user) {
+    if (!user) {
       throw new UnauthorizedException('User not found');
     }
 
@@ -29,17 +33,18 @@ export class AuthService {
   private jwtExtractor(request: Request): string {
     const authHeader = request.headers.authorization;
 
-    if(!authHeader) {
+    if (!authHeader) {
       throw new BadRequestException('Bad request');
     }
 
-    const [ type, token ] = authHeader.split(' ');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const [_, token] = authHeader.split(' ');
 
     return token;
-  } 
+  }
 
   //Uma função que devolve outra função
-  public returnJwtExtractor(): (request: Request ) => string {
-    return this.jwtExtractor
+  public returnJwtExtractor(): (request: Request) => string {
+    return this.jwtExtractor;
   }
 }
