@@ -9,13 +9,13 @@ import { User } from 'src/users/models/users.model';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(private readonly authService: AuthService) {
     super({
-      jwtFromRequest: authService.returnJwtExtractor,
+      jwtFromRequest: authService.returnJwtExtractor(),
       ignoreExpiration: false,
       secretOrKey: process.env.JWT_SECRET,
     });
   }
 
-  public async validate(jwtPayload: JwtPayload): Promise<User> {
+  async validate(jwtPayload: JwtPayload): Promise<User> {
     const user = await this.authService.validateUser(jwtPayload);
 
     if (!user) {
