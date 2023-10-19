@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { User } from './models/users.model';
 import { AuthService } from '../auth/auth.service';
 import { SignupDto } from './dto/signup.dto';
+import {SigninDto} from "./dto/signin.dto";
 
 @Injectable()
 export class UsersService {
@@ -20,7 +21,7 @@ export class UsersService {
   }
 
   public async signin(
-    signinDto: SignupDto,
+    signinDto: SigninDto,
   ): Promise<{ name: string; jwtToken: string; email: string }> {
     const user = await this.findByEmail(signinDto.email);
     const macth = await this.checkPassword(signinDto.password, user);
